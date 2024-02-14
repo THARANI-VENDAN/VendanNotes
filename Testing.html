@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNN RSS Feed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    #rss-feed {
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #rss-feed ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    #rss-feed li {
+      margin-bottom: 20px;
+    }
+    #rss-feed a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    #rss-feed a:hover {
+      text-decoration: underline;
+    }
+    .rss-item-title {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    .rss-item-description {
+      color: #666;
+    }
+
+    /* Media Queries */
+    @media only screen and (max-width: 600px) {
+      #rss-feed {
+        max-width: 90%;
+      }
+    }
+    @media only screen and (min-width: 601px) and (max-width: 1024px) {
+      #rss-feed {
+        max-width: 70%;
+      }
+    }
+    @media only screen and (min-width: 1025px) {
+      #rss-feed {
+        max-width: 800px;
+      }
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div id="rss-feed">
+  <!-- RSS feed will be displayed here -->
+</div>
+
+<script>
+$(document).ready(function() {
+  var rssFeedUrl = "https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss";
+
+  $.ajax({
+    url: rssFeedUrl,
+    dataType: 'json',
+    success: function(data) {
+      var items = data.items;
+      var rssFeedHtml = "<ul>";
+      
+      for (var i = 0; i < items.length; i++) {
+        var title = items[i].title;
+        var link = items[i].link;
+        var description = items[i].description;
+        
+        rssFeedHtml += "<li><span class='rss-item-title'><a href='" + link + "'>" + title + "</a></span><br><span class='rss-item-description'>" + description + "</span></li>";
+      }
+      
+      rssFeedHtml += "</ul>";
+      
+      $("#rss-feed").html(rssFeedHtml);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
